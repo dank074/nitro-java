@@ -1,32 +1,34 @@
-package com.nitro.server.communication.server.netty.connections;
+package com.nitro.server.communication.server.websocket.connections;
 
 import com.nitro.core.communication.connections.Connection;
 import com.nitro.core.communication.connections.IConnection;
 import com.nitro.core.communication.messages.IMessageDataWrapper;
 import com.nitro.core.communication.messages.IMessageEvent;
 import com.nitro.core.communication.messages.IMessageParser;
-import com.nitro.server.communication.server.netty.NettyServer;
+import com.nitro.server.communication.server.websocket.WebSocketServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.List;
 
-public class NettyConnectionHandler extends SimpleChannelInboundHandler<IMessageDataWrapper> {
+public class WebSocketConnectionHandler extends SimpleChannelInboundHandler<IMessageDataWrapper> {
 
-    private final NettyServer nettyServer;
+    private final WebSocketServer webSocketServer;
 
-    public NettyConnectionHandler(NettyServer nettyServer) {
-        this.nettyServer = nettyServer;
+    public WebSocketConnectionHandler(WebSocketServer webSocketServer) {
+        this.webSocketServer = webSocketServer;
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) {
-        String ipAddress = NettyConnection.getIpAddress(ctx.channel());
+        String ipAddress = WebSocketConnection.getIpAddress(ctx.channel());
 
-        IConnection connection = this.nettyServer.addConnection(new NettyConnection(ctx.channel(), ipAddress));
+        IConnection connection = this.webSocketServer.addConnection(new WebSocketConnection(ctx.channel(), ipAddress));
 
         if(connection != null) {
             ctx.channel().attr(Connection.CONNECTION_KEY).set(connection);
+
+            System.out.println("Websocket Connection Added");
         }
     }
 
@@ -36,6 +38,8 @@ public class NettyConnectionHandler extends SimpleChannelInboundHandler<IMessage
 
         if(connection != null) {
             connection.dispose();
+
+            System.out.println("Websocket Connection Removed");
         }
     }
 
@@ -55,7 +59,7 @@ public class NettyConnectionHandler extends SimpleChannelInboundHandler<IMessage
     private List<IMessageEvent> getEventsForWrapper(IMessageDataWrapper wrapper) {
         if(wrapper == null) return null;
 
-        List<IMessageEvent> events = this.nettyServer.getMessages().getEvents(wrapper.getHeader());
+        List<IMessageEvent> events = this.webSocketServer.getMessages().getEvents(wrapper.getHeader());
 
         if((events == null) || (events.size() == 0)) return null;
 

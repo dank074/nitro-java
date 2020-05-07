@@ -10,8 +10,20 @@ public class CommunicationManager implements ICommunicationManager, IServerConta
 
     private Map<Integer, IServer> servers;
 
+    private boolean isDisposed;
+
     public CommunicationManager() {
         this.servers = new HashMap<>();
+
+        this.isDisposed = false;
+    }
+
+    public void dispose() {
+        if(this.isDisposed()) return;
+
+        this.isDisposed = true;
+
+        this.removeAllServers();
     }
 
     public IServer addServer(IServer server) {
@@ -26,7 +38,7 @@ public class CommunicationManager implements ICommunicationManager, IServerConta
         return server;
     }
 
-    public void removeServer(IServer server) throws InterruptedException {
+    public void removeServer(IServer server) {
         if(server == null) return;
 
         IServer existing = this.servers.remove(server.getId());
@@ -34,13 +46,17 @@ public class CommunicationManager implements ICommunicationManager, IServerConta
         if(existing != null) existing.dispose();
     }
 
-    public void removeAllServers() throws InterruptedException {
+    public void removeAllServers() {
         if((this.servers == null) || (this.servers.size() < 1)) return;
 
-        for(int id : this.servers.keySet()) {
-            IServer existing = this.servers.remove(id);
+        for(IServer server : this.servers.values()) this.removeServer(server);
+    }
 
-            if(existing != null) existing.dispose();
-        }
+    public boolean isDisposed() {
+        return this.isDisposed;
+    }
+
+    public Map<Integer, IServer> getServers() {
+        return this.servers;
     }
 }

@@ -1,15 +1,15 @@
-package com.nitro.server.communication.server.netty.connections;
+package com.nitro.server.communication.server.websocket.connections;
 
 import com.nitro.core.communication.connections.Connection;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
-public class NettyConnection extends Connection {
+public class WebSocketConnection extends Connection {
 
     private Channel channel;
 
-    public NettyConnection(Channel channel, String ip) {
+    public WebSocketConnection(Channel channel, String ip) {
         super(ip);
 
         this.channel = channel;
@@ -34,8 +34,6 @@ public class NettyConnection extends Connection {
 
     public void write(ByteBuf buffer) {
         if(this.isDisposed() || (buffer == null)) return;
-
-        System.out.println(buffer.toString());
 
         this.channel.writeAndFlush(buffer);
     }

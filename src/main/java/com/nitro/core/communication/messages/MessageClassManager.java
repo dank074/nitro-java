@@ -1,6 +1,5 @@
 package com.nitro.core.communication.messages;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +61,7 @@ public class MessageClassManager {
         this.messageIdByComposer.put(name, header);
     }
 
-    public void registerMessageEvent(IMessageEvent messageEvent) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void registerMessageEvent(IMessageEvent messageEvent) {
         if(messageEvent == null) return;
 
         int header = this.getEventId(messageEvent);
@@ -76,7 +75,11 @@ public class MessageClassManager {
 
             this.messageInstancesById.put(header, existing);
 
-            messageEvent.setParser(messageEvent.getParserClass().getDeclaredConstructor().newInstance());
+            try {
+                messageEvent.setParser(messageEvent.getParserClass().getDeclaredConstructor().newInstance());
+            } catch(Exception e) {
+                System.out.println("Error registering message event");
+            }
         } else {
             messageEvent.setParser(existing.get(0).getParser());
         }

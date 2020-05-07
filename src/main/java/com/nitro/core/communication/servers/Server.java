@@ -4,9 +4,12 @@ import com.nitro.core.communication.codec.ICodec;
 import com.nitro.core.communication.connections.IConnection;
 import com.nitro.core.communication.connections.IConnectionContainer;
 import com.nitro.core.communication.messages.IMessageConfiguration;
+import com.nitro.core.communication.messages.IMessageHandler;
 import com.nitro.core.communication.messages.MessageClassManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Server implements IServer, IConnectionContainer {
@@ -20,6 +23,7 @@ public abstract class Server implements IServer, IConnectionContainer {
     private IServerContainer container;
     private Map<String, Map<Integer, IConnection>> connections;
     private MessageClassManager messages;
+    private List<IMessageHandler> handlers;
 
     protected ICodec codec;
 
@@ -31,6 +35,7 @@ public abstract class Server implements IServer, IConnectionContainer {
         this.container = null;
         this.connections = new HashMap<>();
         this.messages = new MessageClassManager();
+        this.handlers = new ArrayList<>();
 
         this.codec = null;
     }
@@ -47,6 +52,7 @@ public abstract class Server implements IServer, IConnectionContainer {
         }
 
         connection.setContainer(this);
+        connection.setServer(this);
 
         existing.put(connection.getId(), connection);
 
@@ -85,6 +91,18 @@ public abstract class Server implements IServer, IConnectionContainer {
         if(configuration == null) return;
 
         this.getMessages().registerMessages(configuration);
+    }
+
+    public void registerHandler(IMessageHandler handler) {
+        if(handler == null) return;
+
+        if(this.handlers.contains(handler)) return;
+
+        handler.setServer(this);
+
+        this.handlers.add(handler);
+
+        handler.onInit();
     }
 
     public int getId() {

@@ -46,11 +46,7 @@ public class RoomManager implements IRoomManager, IRoomInstanceContainer {
     }
 
     public void removeAllInstances() {
-        for(int id : this.rooms.keySet()) {
-            IRoomInstance instance = this.rooms.remove(id);
-
-            if(instance != null) instance.dispose();
-        }
+        for(int id : this.rooms.keySet()) this.removeInstance(id);
     }
 
     public IRoomObjectManager createRoomObjectManager() {

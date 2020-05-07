@@ -19,7 +19,10 @@ public class EvaWireFormat implements ICodec {
 
         buffer.writeInt(0).writeShort(header);
 
+        System.out.println(header);
+
         for(Object message : messages) {
+            System.out.println(message);
             if(message instanceof Byte) {
                 buffer.writeByte(((Byte) message).getValue());
 
