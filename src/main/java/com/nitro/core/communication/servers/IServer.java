@@ -1,11 +1,12 @@
 package com.nitro.core.communication.servers;
 
 import com.nitro.core.communication.codec.ICodec;
+import com.nitro.core.communication.connections.IConnectionContainer;
 import com.nitro.core.communication.messages.IMessageConfiguration;
 import com.nitro.core.communication.messages.IMessageListener;
 import com.nitro.core.communication.messages.MessageClassManager;
 
-public interface IServer {
+public interface IServer extends IConnectionContainer {
 
     void init();
     void dispose();

@@ -2,7 +2,6 @@ package com.nitro.core.communication.servers;
 
 import com.nitro.core.communication.codec.ICodec;
 import com.nitro.core.communication.connections.IConnection;
-import com.nitro.core.communication.connections.IConnectionContainer;
 import com.nitro.core.communication.messages.*;
 
 import java.lang.reflect.Constructor;
@@ -10,7 +9,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Server implements IServer, IConnectionContainer {
+public abstract class Server implements IServer {
 
     private static int SERVER_COUNTER = 0;
 

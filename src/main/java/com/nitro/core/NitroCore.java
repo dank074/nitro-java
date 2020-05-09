@@ -2,15 +2,19 @@ package com.nitro.core;
 
 import com.nitro.core.communication.CommunicationManager;
 import com.nitro.core.communication.ICommunicationManager;
+import com.nitro.core.plugin.IPluginManager;
+import com.nitro.core.plugin.PluginManager;
 
 public class NitroCore implements INitroCore {
 
+    private IPluginManager pluginManager;
     private ICommunicationManager communicationManager;
 
     private boolean isDisposed;
 
     public NitroCore() {
-        this.communicationManager = new CommunicationManager();
+        this.pluginManager = new PluginManager(this);
+        this.communicationManager = new CommunicationManager(this);
 
         this.isDisposed = false;
     }
@@ -25,10 +29,20 @@ public class NitroCore implements INitroCore {
 
             this.communicationManager = null;
         }
+
+        if(this.pluginManager != null) {
+            this.pluginManager.dispose();
+
+            this.pluginManager = null;
+        }
     }
 
     public boolean isDisposed() {
         return this.isDisposed;
+    }
+
+    public IPluginManager getPluginManager() {
+        return this.pluginManager;
     }
 
     public ICommunicationManager getCommunicationManager() {
