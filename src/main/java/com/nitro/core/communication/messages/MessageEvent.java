@@ -2,16 +2,22 @@ package com.nitro.core.communication.messages;
 
 import com.nitro.core.communication.connections.IConnection;
 
+import java.lang.reflect.Method;
+
 public class MessageEvent implements IMessageEvent {
 
-    protected IMessageCallback messageCallback;
-    protected Class<? extends IMessageParser> parserClass;
+    private Method messageCallback;
+    private IMessageListener messageListener;
+    private Class<? extends IMessageParser> parserClass;
     protected IMessageParser parser;
-    protected IConnection connection;
+    private IConnection connection;
 
-    public MessageEvent(IMessageCallback messageCallback, Class<? extends IMessageParser> parserClass) {
+    public MessageEvent(Method messageCallback, Class<? extends IMessageParser> parserClass) {
         this.messageCallback = messageCallback;
+        this.messageListener = null;
         this.parserClass = parserClass;
+        this.parser = null;
+        this.connection = null;
     }
 
     public void dispose() {
@@ -20,8 +26,16 @@ public class MessageEvent implements IMessageEvent {
         this.connection = null;
     }
 
-    public IMessageCallback getMessageCallback() {
+    public Method getMessageCallback() {
         return this.messageCallback;
+    }
+
+    public IMessageListener getMessageListener() {
+        return this.messageListener;
+    }
+
+    public void setMessageListener(IMessageListener listener) {
+        this.messageListener = listener;
     }
 
     public Class<? extends IMessageParser> getParserClass() {

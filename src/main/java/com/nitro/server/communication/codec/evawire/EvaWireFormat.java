@@ -13,16 +13,11 @@ import java.util.List;
 public class EvaWireFormat implements ICodec {
 
     public ByteBuf encode(int header, Object[] messages) {
-        if((messages == null) || (messages.length < 1)) return null;
-
         ByteBuf buffer = Unpooled.buffer();
 
         buffer.writeInt(0).writeShort(header);
 
-        System.out.println(header);
-
         for(Object message : messages) {
-            System.out.println(message);
             if(message instanceof Byte) {
                 buffer.writeByte(((Byte) message).getValue());
 

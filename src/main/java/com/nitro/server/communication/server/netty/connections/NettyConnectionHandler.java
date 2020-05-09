@@ -27,33 +27,39 @@ public class NettyConnectionHandler extends SimpleChannelInboundHandler<IMessage
 
         if(connection != null) {
             ctx.channel().attr(Connection.CONNECTION_KEY).set(connection);
+
+            return;
         }
+
+        ctx.channel().close();
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         IConnection connection = ctx.channel().attr(Connection.CONNECTION_KEY).get();
 
-        if(connection != null) {
-            connection.dispose();
-        }
+        if(connection != null) connection.dispose();
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, IMessageDataWrapper wrapper) {
+        IConnection connection = ctx.channel().attr(Connection.CONNECTION_KEY).get();
+
+        if(connection == null) {
+            ctx.channel().close();
+
+            return;
+        }
+
         try {
-            IConnection connection = ctx.channel().attr(Connection.CONNECTION_KEY).get();
-
-            if(connection != null) {
-                connection.handleEvents(this.getEventsForWrapper(wrapper));
-            }
-        } catch (Exception e) {
-
+            connection.handleEvents(this.getEventsForWrapper(wrapper));
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private List<IMessageEvent> getEventsForWrapper(IMessageDataWrapper wrapper) {
-        if(wrapper == null) return null;
+        if((wrapper == null) || (this.nettyServer == null)) return null;
 
         List<IMessageEvent> events = this.nettyServer.getMessages().getEvents(wrapper.getHeader());
 

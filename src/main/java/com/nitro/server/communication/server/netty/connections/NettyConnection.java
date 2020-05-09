@@ -35,8 +35,6 @@ public class NettyConnection extends Connection {
     public void write(ByteBuf buffer) {
         if(this.isDisposed() || (buffer == null)) return;
 
-        System.out.println(buffer.toString());
-
         this.channel.writeAndFlush(buffer);
     }
 

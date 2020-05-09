@@ -1,12 +1,13 @@
 package com.nitro.server.communication.messages.incoming.client;
 
-import com.nitro.core.communication.messages.IMessageCallback;
 import com.nitro.core.communication.messages.MessageEvent;
 import com.nitro.server.communication.messages.parser.client.ClientPongParser;
 
+import java.lang.reflect.Method;
+
 public class ClientPongEvent extends MessageEvent {
 
-    public ClientPongEvent(IMessageCallback messageCallback) {
+    public ClientPongEvent(Method messageCallback) {
         super(messageCallback, ClientPongParser.class);
     }
 

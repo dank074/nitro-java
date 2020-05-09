@@ -46,7 +46,7 @@ public class NettyServer extends Server {
         this.bootstrap.bind(new InetSocketAddress(this.getIp(), this.getPort()))
                 .addListener(future -> {
                     if(!future.isSuccess()) {
-                        System.out.println("failed");
+                        System.out.println("NettyServer failed to start");
                     } else {
                         System.out.println("Game server is listening on {}:{}");
                     }

@@ -23,7 +23,7 @@ public class MessageClassManager {
         this.messageInstancesById.clear();
     }
 
-    public void registerMessages(IMessageConfiguration configuration) {
+    public void registerMessageConfiguration(IMessageConfiguration configuration) {
         Map<Integer, Class<? extends IMessageEvent>> events = configuration.getEvents();
 
         if((events != null) && (events.size() > 0)) {
@@ -46,7 +46,9 @@ public class MessageClassManager {
 
         String name = messageEvent.getName();
 
-        if(this.messageIdByEvent.containsKey(name)) return;
+        if(this.messageIdByEvent.containsKey(name)) {
+            System.out.println(messageEvent.getSimpleName() + " is already registered. Setting to header id: " + header);
+        }
 
         this.messageIdByEvent.put(name, header);
     }
@@ -56,7 +58,9 @@ public class MessageClassManager {
 
         String name = messageComposer.getName();
 
-        if(this.messageIdByComposer.containsKey(name)) return;
+        if(this.messageIdByComposer.containsKey(name)) {
+            System.out.println(messageComposer.getSimpleName() + " is already registered. Setting to header id: " + header);
+        }
 
         this.messageIdByComposer.put(name, header);
     }
@@ -111,10 +115,6 @@ public class MessageClassManager {
         }
     }
 
-    public List<IMessageEvent> getEvents(int header) {
-        return this.messageInstancesById.get(header);
-    }
-
     public int getEventId(IMessageEvent messageEvent) {
         if(messageEvent == null) return -1;
 
@@ -137,5 +137,9 @@ public class MessageClassManager {
         if(header == null) return -1;
 
         return header;
+    }
+
+    public List<IMessageEvent> getEvents(int header) {
+        return this.messageInstancesById.get(header);
     }
 }

@@ -1,13 +1,13 @@
 package com.nitro.core.communication.connections;
 
 import com.nitro.core.common.disposable.IDisposable;
-import com.nitro.core.communication.messages.IMessageCallback;
 import com.nitro.core.communication.messages.IMessageComposer;
 import com.nitro.core.communication.messages.IMessageEvent;
 import com.nitro.core.communication.servers.IServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AttributeKey;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public abstract class Connection implements IConnection, IDisposable {
@@ -55,9 +55,16 @@ public abstract class Connection implements IConnection, IDisposable {
 
         event.setConnection(this);
 
-        IMessageCallback messageCallback = event.getMessageCallback();
+        Method messageCallback = event.getMessageCallback();
 
-        if(messageCallback != null) messageCallback.handle(event);
+        if(messageCallback != null)
+        {
+            try {
+                messageCallback.invoke(event.getMessageListener(), event);
+            } catch(Exception e) {
+                System.out.println(e);
+            }
+        }
 
         event.dispose();
     }

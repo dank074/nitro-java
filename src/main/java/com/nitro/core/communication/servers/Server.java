@@ -3,13 +3,11 @@ package com.nitro.core.communication.servers;
 import com.nitro.core.communication.codec.ICodec;
 import com.nitro.core.communication.connections.IConnection;
 import com.nitro.core.communication.connections.IConnectionContainer;
-import com.nitro.core.communication.messages.IMessageConfiguration;
-import com.nitro.core.communication.messages.IMessageHandler;
-import com.nitro.core.communication.messages.MessageClassManager;
+import com.nitro.core.communication.messages.*;
 
-import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Server implements IServer, IConnectionContainer {
@@ -23,7 +21,6 @@ public abstract class Server implements IServer, IConnectionContainer {
     private IServerContainer container;
     private Map<String, Map<Integer, IConnection>> connections;
     private MessageClassManager messages;
-    private List<IMessageHandler> handlers;
 
     protected ICodec codec;
 
@@ -35,7 +32,6 @@ public abstract class Server implements IServer, IConnectionContainer {
         this.container = null;
         this.connections = new HashMap<>();
         this.messages = new MessageClassManager();
-        this.handlers = new ArrayList<>();
 
         this.codec = null;
     }
@@ -87,22 +83,41 @@ public abstract class Server implements IServer, IConnectionContainer {
         }
     }
 
-    public void registerMessages(IMessageConfiguration configuration) {
+    public void registerMessageConfiguration(IMessageConfiguration configuration) {
         if(configuration == null) return;
 
-        this.getMessages().registerMessages(configuration);
+        this.getMessages().registerMessageConfiguration(configuration);
     }
 
-    public void registerHandler(IMessageHandler handler) {
-        if(handler == null) return;
+    public void registerMessageListener(IMessageListener listener) {
+        if(listener == null) return;
 
-        if(this.handlers.contains(handler)) return;
+        Method[] methods = listener.getClass().getDeclaredMethods();
 
-        handler.setServer(this);
+        if((methods == null) || (methods.length == 0)) return;
 
-        this.handlers.add(handler);
+        for(Method method : methods) {
+            if(!method.isAnnotationPresent(MessageHandler.class)) continue;
 
-        handler.onInit();
+            Class<?>[] parameterTypes = method.getParameterTypes();
+
+            if(parameterTypes.length == 0) continue;
+
+            Class<?> eventClass = parameterTypes[0];
+
+            if(eventClass == null) continue;
+
+            try {
+                Constructor<?> eventClassConstructor = eventClass.getConstructor(Method.class);
+                IMessageEvent event = (IMessageEvent) eventClassConstructor.newInstance(method);
+
+                event.setMessageListener(listener);
+
+                this.getMessages().registerMessageEvent(event);
+            } catch(Exception e) {
+                System.out.println("Could not register event");
+            }
+        }
     }
 
     public int getId() {

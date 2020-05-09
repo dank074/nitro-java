@@ -2,19 +2,13 @@ package com.nitro.server;
 
 import com.nitro.core.INitroCore;
 import com.nitro.core.NitroCore;
-import com.nitro.core.communication.messages.IMessageEvent;
 import com.nitro.core.communication.servers.IServer;
 import com.nitro.server.communication.messages.NitroMessages;
-import com.nitro.server.communication.messages.handlers.ClientMessagesHandler;
-import com.nitro.server.communication.messages.handlers.SecurityMessagesHandler;
-import com.nitro.server.communication.messages.incoming.client.ClientReleaseVersionEvent;
-import com.nitro.server.communication.messages.parser.client.ClientReleaseVersionParser;
+import com.nitro.server.communication.messages.listeners.ClientMessagesListener;
+import com.nitro.server.communication.messages.listeners.SecurityMessagesListener;
 import com.nitro.server.communication.server.netty.NettyServer;
-import com.nitro.server.communication.server.websocket.WebSocketServer;
 import com.nitro.server.room.IRoomEngine;
 import com.nitro.server.room.RoomEngine;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class Application {
 
@@ -38,9 +32,9 @@ public class Application {
 
         IServer server = core.getCommunicationManager().addServer(new NettyServer(ip, port));
 
-        server.registerMessages(new NitroMessages());
-        server.registerHandler(new ClientMessagesHandler());
-        server.registerHandler(new SecurityMessagesHandler());
+        server.registerMessageConfiguration(new NitroMessages());
+        server.registerMessageListener(new ClientMessagesListener());
+        server.registerMessageListener(new SecurityMessagesListener());
 
         server.init();
     }
