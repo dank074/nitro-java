@@ -1,0 +1,14 @@
+# database
+database.host: "0.0.0.0"
+database.port: 3306
+database.name: ""
+database.user: ""
+database.pass: ""
+database.params: ""
+
+# WARNING: if true all tables will be dropped and a new empty database will be generated
+database.generate: false
+
+# server
+server.host: "0.0.0.0"
+server.port: 1242
