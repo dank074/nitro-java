@@ -54,7 +54,7 @@ public class Rank implements IRank {
     }
 
     public int getPermissionId() {
-        return this.entity.securityPermissionEntity.id;
+        return this.entity.permissionEntity.id;
     }
 
     public IPermission getPermission() {

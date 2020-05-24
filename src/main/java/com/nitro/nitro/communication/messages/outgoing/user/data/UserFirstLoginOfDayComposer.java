@@ -1,18 +1,18 @@
-package com.nitro.nitro.communication.messages.outgoing.security;
+package com.nitro.nitro.communication.messages.outgoing.user.data;
 
 import com.nitro.core.communication.messages.IMessageComposer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecurityMachineComposer implements IMessageComposer {
+public class UserFirstLoginOfDayComposer implements IMessageComposer {
 
     private List<Object> data;
 
-    public SecurityMachineComposer(String machineId) {
+    public UserFirstLoginOfDayComposer(boolean flag) {
         this.data = new ArrayList<>();
 
-        this.data.add(machineId);
+        this.data.add(flag);
     }
 
     public void dispose() {

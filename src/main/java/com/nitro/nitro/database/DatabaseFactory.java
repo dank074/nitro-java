@@ -18,23 +18,21 @@ public class DatabaseFactory {
         return dataSourceConfig;
     }
 
-    public static DatabaseConfig createDatabaseConfig(DataSourceConfig dataSourceConfig) {
+    public static DatabaseConfig createDatabaseConfig(DataSourceConfig dataSourceConfig, boolean generateDatabase) {
         if(dataSourceConfig == null) return null;
 
         DatabaseConfig databaseConfig = new DatabaseConfig();
 
         databaseConfig.setDataSourceConfig(dataSourceConfig);
 
-        return databaseConfig;
-    }
-
-    public static DatabaseConfig enableDatabaseGeneration(DatabaseConfig databaseConfig) {
-        if(databaseConfig == null) return null;
-
         Properties properties = new Properties();
 
-        properties.setProperty("ebean.ddl.generate", "true");
-        properties.setProperty("ebean.ddl.run", "true");
+        properties.setProperty("ebean.search.packages", "com.nitro.nitro.database.entities");
+
+        if(generateDatabase) {
+            properties.setProperty("ebean.ddl.generate", "true");
+            properties.setProperty("ebean.ddl.run", "true");
+        }
 
         databaseConfig.loadFromProperties(properties);
 

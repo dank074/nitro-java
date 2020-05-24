@@ -20,6 +20,6 @@ public class SecurityPermissionEntity extends EntityTimestamp {
     @Column(columnDefinition = "enum('0','1') default '0'")
     public String allPermissions;
 
-    @OneToMany(mappedBy = "securityPermissionEntity", fetch = FetchType.LAZY)
-    public List<SecurityRankEntity> securityRankEntities;
+    @OneToMany(mappedBy = "permissionEntity", fetch = FetchType.LAZY)
+    public List<SecurityRankEntity> rankEntities;
 }

@@ -7,6 +7,11 @@ import com.nitro.nitro.communication.messages.incoming.security.SecurityMachineE
 import com.nitro.nitro.communication.messages.incoming.security.SecurityTicketEvent;
 import com.nitro.nitro.communication.messages.outgoing.security.SecurityAuthenticatedComposer;
 import com.nitro.nitro.communication.messages.outgoing.security.SecurityMachineComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.access.UserPermissionsComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.access.UserRightsComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.UserAchievementScoreComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.UserFirstLoginOfDayComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.UserHomeRoomComposer;
 import com.nitro.nitro.security.ISecurityManager;
 import com.nitro.nitro.user.IUser;
 import com.nitro.nitro.user.IUserManager;
@@ -37,6 +42,8 @@ public class SecurityMessagesListener implements IMessageListener {
             return;
         }
 
+        System.out.print(userId);
+
         IUser user = userManager.createUser(userId, event.getConnection());
 
         if(user == null) {
@@ -46,5 +53,10 @@ public class SecurityMessagesListener implements IMessageListener {
         }
 
         event.getConnection().processComposer(new SecurityAuthenticatedComposer());
+        event.getConnection().processComposer(new UserRightsComposer());
+        event.getConnection().processComposer(new UserPermissionsComposer(false, 1, false));
+        event.getConnection().processComposer(new UserAchievementScoreComposer(0));
+        event.getConnection().processComposer(new UserHomeRoomComposer(0, false));
+        event.getConnection().processComposer(new UserFirstLoginOfDayComposer(false));
     }
 }

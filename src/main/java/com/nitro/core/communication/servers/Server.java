@@ -73,7 +73,11 @@ public abstract class Server extends Component implements IServer {
         Map<Integer, IConnection> existing = this.connections.get(ip);
 
         if(existing != null) {
-            if(existing.size() > 0) existing.remove(connection.getId()).dispose();
+            if(existing.size() > 0) {
+                IConnection existingConnection = existing.remove(connection.getId());
+
+                if(existingConnection != null) existingConnection.dispose();
+            }
 
             if(existing.size() == 0) this.connections.remove(ip);
         }
@@ -154,7 +158,11 @@ public abstract class Server extends Component implements IServer {
 
         int header = this.getMessages().getComposerId(composer);
 
-        if(header == -1) return;
+        if(header == -1) {
+            System.out.println(composer.getClass().getSimpleName() + " has not been registered");
+
+            return;
+        }
 
         connection.write(this.getCodec().encode(header, composer.getMessageArray()));
     }

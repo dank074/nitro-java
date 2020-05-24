@@ -78,12 +78,10 @@ public class Application {
         String user = (String) config.getOrDefault("database.user", "root");
         String pass = (String) config.getOrDefault("database.pass", "");
         String params = (String) config.getOrDefault("database.params", "");
+        boolean databaseGeneration = (boolean) config.getOrDefault("database.generate", false);
 
         DataSourceConfig dataSourceConfig = DatabaseFactory.createDataSource(host, port, name, user, pass, params);
-        DatabaseConfig databaseConfig = DatabaseFactory.createDatabaseConfig(dataSourceConfig);
-
-        boolean databaseGeneration = (boolean) config.getOrDefault("database.generate", false);
-        if(databaseGeneration) DatabaseFactory.enableDatabaseGeneration(databaseConfig);
+        DatabaseConfig databaseConfig = DatabaseFactory.createDatabaseConfig(dataSourceConfig, databaseGeneration);
 
         IDatabaseInstance databaseInstance = DatabaseFactory.createDatabaseInstance(databaseConfig);
 
@@ -106,6 +104,7 @@ public class Application {
 
         server.registerMessageConfiguration(new NitroMessages());
         server.registerMessageListener(new ClientMessagesListener());
+        server.registerMessageListener(new DesktopMessagesListener());
         server.registerMessageListener(new SecurityMessagesListener());
 
         server.init();

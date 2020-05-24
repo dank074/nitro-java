@@ -1,7 +1,10 @@
 package com.nitro.nitro.database.entities.user;
 
 import com.nitro.nitro.database.abstracts.EntityTimestamp;
+import com.nitro.nitro.database.entities.security.SecurityRankEntity;
 import com.nitro.nitro.database.entities.security.SecurityTicketEntity;
+import io.ebean.annotation.ConstraintMode;
+import io.ebean.annotation.DbForeignKey;
 import io.ebean.annotation.NotNull;
 
 import javax.persistence.*;
@@ -32,6 +35,25 @@ public class UserEntity extends EntityTimestamp {
 
     @NotNull
     public String figure;
+
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    public List<UserCurrencyEntity> userCurrencyEntities;
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    public UserInfoEntity userInfoEntity;
+
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    public List<UserOutfitEntity> userOutfitEntities;
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    public UserStatisticsEntity userStatisticsEntity;
+
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    public List<UserSubscriptionEntity> userSubscriptionEntities;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @DbForeignKey(onDelete = ConstraintMode.SET_NULL)
+    public SecurityRankEntity rankEntity;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     public List<SecurityTicketEntity> securityTicketEntities;

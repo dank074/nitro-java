@@ -81,7 +81,7 @@ public class SecurityManager extends Component implements ISecurityManager {
 
         if(entity.isLocked == 0) SecurityDao.removeSecurityTicket(entity);
 
-        return entity.userEntity.id;
+        return entity.userEntityId;
     }
 
     public IPermissionManager getPermissionManager() {
