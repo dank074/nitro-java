@@ -1,8 +1,12 @@
 package com.nitro.nitro.user;
 
+import com.nitro.nitro.Nitro;
 import com.nitro.nitro.database.entities.user.UserEntity;
 import com.nitro.nitro.database.entities.user.UserInfoEntity;
 import com.nitro.nitro.database.entities.user.UserStatisticsEntity;
+import io.ebean.bean.EntityBean;
+
+import java.util.Date;
 
 public class UserDetails {
 
@@ -16,39 +20,68 @@ public class UserDetails {
         this.setExtendedData();
     }
 
+    public void save() {
+        Nitro.INSTANCE.getDatabaseInstance().saveEntity((EntityBean) this.entity);
+    }
+
+    public void saveNow() {
+        Nitro.INSTANCE.getDatabaseInstance().saveEntity((EntityBean) this.entity, true);
+    }
+
     private void setExtendedData() {
         if(this.entity == null) return;
 
-        if(this.entity.userInfoEntity == null) {
-            UserInfoEntity entity = new UserInfoEntity(this.entity);
+        boolean needsSave = false;
 
-            this.entity.userInfoEntity = entity;
+        if(this.entity.getUserInfoEntity() == null) {
+            this.entity.setUserInfoEntity(new UserInfoEntity());
 
-            try {
-                entity.save();
-            } catch (Exception e) {
-                System.out.print(e.getMessage());
-            }
+            needsSave = true;
         }
 
-        if(this.entity.userStatisticsEntity == null) {
-            UserStatisticsEntity entity = new UserStatisticsEntity(this.entity);
+        if(this.entity.getUserStatisticsEntity() == null) {
+            this.entity.setUserStatisticsEntity(new UserStatisticsEntity());
 
-            this.entity.userStatisticsEntity = entity;
-
-            try {
-                entity.save();
-            } catch (Exception e) {
-                System.out.print(e.getMessage());
-            }
+            needsSave = true;
         }
+
+        if(needsSave) this.saveNow();
+    }
+
+    public void setOnlineStatus(boolean flag, boolean updateStreak) {
+        if(flag) {
+            this.entity.setOnline(true);
+            this.entity.setLastOnline(new Date());
+
+            if(updateStreak) this.updateLoginStreak();
+        } else {
+            this.entity.setOnline(false);
+        }
+
+        this.save();
+    }
+
+    private void updateLoginStreak() {
+
     }
 
     public int getId() {
-        return this.entity.id;
+        return this.entity.getId();
     }
 
     public String getUsername() {
-        return this.entity.username;
+        return this.entity.getUsername();
+    }
+
+    public String getFigure() {
+        return this.entity.getFigure();
+    }
+
+    public String getGender() {
+        return this.entity.getGender().toUpperCase();
+    }
+
+    public String getMotto() {
+        return this.entity.getMotto();
     }
 }

@@ -10,9 +10,7 @@ import javax.persistence.*;
 @Entity
 public class UserInfoEntity extends EntityTimestamp {
 
-    public UserInfoEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-
+    public UserInfoEntity() {
         this.friendRequestsDisabled = "0";
         this.toolbarToggles = "1";
         this.oldChat = "0";

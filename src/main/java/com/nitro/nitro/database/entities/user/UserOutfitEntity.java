@@ -19,12 +19,12 @@ public class UserOutfitEntity extends EntityTimestamp {
     public UserEntity userEntity;
 
     @NotNull
-    private String figure;
+    public String figure;
 
     @NotNull
     @Column(columnDefinition = "enum('M', 'F') default 'M'")
     public String gender;
 
     @NotNull
-    private int slotNumber;
+    public int slotNumber;
 }

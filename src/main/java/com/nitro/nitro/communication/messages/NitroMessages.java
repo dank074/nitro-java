@@ -9,6 +9,7 @@ import com.nitro.nitro.communication.messages.incoming.desktop.DesktopNewsEvent;
 import com.nitro.nitro.communication.messages.incoming.desktop.DesktopViewEvent;
 import com.nitro.nitro.communication.messages.incoming.security.SecurityMachineEvent;
 import com.nitro.nitro.communication.messages.incoming.security.SecurityTicketEvent;
+import com.nitro.nitro.communication.messages.incoming.user.data.*;
 import com.nitro.nitro.communication.messages.outgoing.OutgoingHeaders;
 import com.nitro.nitro.communication.messages.outgoing.client.ClientPingComposer;
 import com.nitro.nitro.communication.messages.outgoing.desktop.DesktopCampaignsComposer;
@@ -20,6 +21,7 @@ import com.nitro.nitro.communication.messages.outgoing.user.access.UserRightsCom
 import com.nitro.nitro.communication.messages.outgoing.user.data.UserAchievementScoreComposer;
 import com.nitro.nitro.communication.messages.outgoing.user.data.UserFirstLoginOfDayComposer;
 import com.nitro.nitro.communication.messages.outgoing.user.data.UserHomeRoomComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.UserInfoComposer;
 
 public class NitroMessages extends MessageConfiguration {
 
@@ -33,6 +35,12 @@ public class NitroMessages extends MessageConfiguration {
 
         this.events.put(IncomingHeaders.SECURITY_MACHINE, SecurityMachineEvent.class);
         this.events.put(IncomingHeaders.SECURITY_TICKET, SecurityTicketEvent.class);
+
+        this.events.put(IncomingHeaders.USER_DATA_FIGURE, UserFigureEvent.class);
+        this.events.put(IncomingHeaders.USER_DATA_INFO, UserInfoEvent.class);
+        this.events.put(IncomingHeaders.USER_DATA_MOTTO, UserMottoEvent.class);
+        this.events.put(IncomingHeaders.USER_DATA_PROFILE, UserProfileEvent.class);
+        this.events.put(IncomingHeaders.USER_DATA_TAGS, UserTagsEvent.class);
     }
 
     protected void registerComposers() {
@@ -50,5 +58,6 @@ public class NitroMessages extends MessageConfiguration {
         this.composers.put(OutgoingHeaders.USER_ACHIEVEMENT_SCORE, UserAchievementScoreComposer.class);
         this.composers.put(OutgoingHeaders.FIRST_LOGIN_OF_DAY, UserFirstLoginOfDayComposer.class);
         this.composers.put(OutgoingHeaders.USER_HOME_ROOM, UserHomeRoomComposer.class);
+        this.composers.put(OutgoingHeaders.USER_INFO, UserInfoComposer.class);
     }
 }

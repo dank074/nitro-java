@@ -8,6 +8,7 @@ import io.ebean.annotation.DbForeignKey;
 import io.ebean.annotation.NotNull;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,46 +16,128 @@ public class UserEntity extends EntityTimestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    private int id;
 
     @NotNull
     @Column(unique = true)
-    public String username;
+    private String username;
 
     @NotNull
-    public String password;
+    private String password;
 
     @NotNull
-    public String email;
+    private String email;
 
-    public String motto;
+    private String motto;
 
     @NotNull
     @Column(columnDefinition = "enum('M', 'F') default 'M'")
-    public String gender;
+    private String gender;
 
     @NotNull
-    public String figure;
+    private String figure;
+
+    private Date lastOnline;
+
+    @NotNull
+    @Column(columnDefinition = "enum('0', '1') default '0'")
+    private String online;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    public List<UserCurrencyEntity> userCurrencyEntities;
+    private List<UserCurrencyEntity> userCurrencyEntities;
 
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    public UserInfoEntity userInfoEntity;
+    private UserInfoEntity userInfoEntity;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    public List<UserOutfitEntity> userOutfitEntities;
+    private List<UserOutfitEntity> userOutfitEntities;
 
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
-    public UserStatisticsEntity userStatisticsEntity;
+    private UserStatisticsEntity userStatisticsEntity;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    public List<UserSubscriptionEntity> userSubscriptionEntities;
+    private List<UserSubscriptionEntity> userSubscriptionEntities;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @DbForeignKey(onDelete = ConstraintMode.SET_NULL)
-    public SecurityRankEntity rankEntity;
+    private SecurityRankEntity rankEntity;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    public List<SecurityTicketEntity> securityTicketEntities;
+    private List<SecurityTicketEntity> securityTicketEntities;
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getMotto() {
+        return this.motto;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getFigure() {
+        return this.figure;
+    }
+
+    public void setFigure(String figure) {
+        this.figure = figure;
+    }
+
+    public Date getLastOnline() {
+        return this.lastOnline;
+    }
+
+    public void setLastOnline(Date date) {
+        this.lastOnline = date;
+    }
+
+    public boolean getOnline() {
+        return this.online.equals("1");
+    }
+
+    public void setOnline(boolean flag) {
+        this.online = ((flag) ? "1" : "0");
+    }
+
+    public UserInfoEntity getUserInfoEntity() {
+        return this.userInfoEntity;
+    }
+
+    public void setUserInfoEntity(UserInfoEntity entity) {
+        if(entity == null) return;
+
+        entity.userEntity = this;
+
+        this.userInfoEntity = entity;
+    }
+
+    public UserStatisticsEntity getUserStatisticsEntity() {
+        return this.userStatisticsEntity;
+    }
+
+    public void setUserStatisticsEntity(UserStatisticsEntity entity) {
+        if(entity == null) return;
+
+        entity.userEntity = this;
+
+        this.userStatisticsEntity = entity;
+    }
 }

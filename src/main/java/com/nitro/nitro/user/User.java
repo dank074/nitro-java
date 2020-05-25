@@ -25,11 +25,15 @@ public class User extends Component implements IUser {
     protected void onDispose() {
         this.container.removeUser(this);
 
+        this.userDetails.setOnlineStatus(false, false);
+
         if(this.connection != null) {
             this.connection.dispose();
 
             this.connection = null;
         }
+
+        this.userDetails.saveNow();
     }
 
     public boolean setConnection(IConnection connection) {

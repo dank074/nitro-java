@@ -106,6 +106,7 @@ public class Application {
         server.registerMessageListener(new ClientMessagesListener());
         server.registerMessageListener(new DesktopMessagesListener());
         server.registerMessageListener(new SecurityMessagesListener());
+        server.registerMessageListener(new UserMessagesListener());
 
         server.init();
     }

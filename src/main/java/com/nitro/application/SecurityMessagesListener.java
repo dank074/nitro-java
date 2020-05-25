@@ -42,8 +42,6 @@ public class SecurityMessagesListener implements IMessageListener {
             return;
         }
 
-        System.out.print(userId);
-
         IUser user = userManager.createUser(userId, event.getConnection());
 
         if(user == null) {
@@ -51,6 +49,8 @@ public class SecurityMessagesListener implements IMessageListener {
 
             return;
         }
+
+        user.getUserDetails().setOnlineStatus(true, true);
 
         event.getConnection().processComposer(new SecurityAuthenticatedComposer());
         event.getConnection().processComposer(new UserRightsComposer());

@@ -24,12 +24,6 @@ public class EvaWireFormat implements ICodec {
                 continue;
             }
 
-            if(message instanceof Boolean) {
-                buffer.writeBoolean((Boolean) message);
-
-                continue;
-            }
-
             if(message instanceof Short) {
                 buffer.writeShort(((Short) message).getValue());
 
@@ -42,9 +36,21 @@ public class EvaWireFormat implements ICodec {
                 continue;
             }
 
+            if(message instanceof Boolean) {
+                buffer.writeInt(((Boolean) message ? 1 : 0));
+
+                continue;
+            }
+
             if(message instanceof String) {
-                buffer.writeShort(message.toString().length());
-                buffer.writeBytes(message.toString().getBytes());
+                String messageString = message.toString();
+
+                if(messageString.length() == 0) {
+                    buffer.writeShort(0);
+                } else {
+                    buffer.writeShort(messageString.length());
+                    buffer.writeBytes(messageString.getBytes());
+                }
             }
         }
 

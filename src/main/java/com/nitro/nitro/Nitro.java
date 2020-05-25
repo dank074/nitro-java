@@ -38,10 +38,11 @@ public class Nitro extends Component {
                 throw new Exception("A database instance was not specified");
             }
 
+            this.databaseInstance.init();
             this.securityManager.init();
             this.roomManager.init();
             this.userManager.init();
-        } catch(Exception e ) {
+        } catch(Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -50,10 +51,14 @@ public class Nitro extends Component {
         this.userManager.dispose();
         this.roomManager.dispose();
         this.securityManager.dispose();
+        this.databaseInstance.dispose();
     }
 
     public void setDatabaseInstance(IDatabaseInstance databaseInstance) {
         if(this.databaseInstance != null) {
+            this.databaseInstance.dispose();
+
+            this.databaseInstance = null;
         }
 
         this.databaseInstance = databaseInstance;

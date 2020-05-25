@@ -19,5 +19,5 @@ public class UserSubscriptionEntity extends EntityTimestamp {
     public UserEntity userEntity;
 
     @NotNull
-    private String name;
+    public String name;
 }

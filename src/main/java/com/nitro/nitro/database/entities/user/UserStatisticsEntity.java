@@ -11,10 +11,6 @@ import java.util.Date;
 @Entity
 public class UserStatisticsEntity extends EntityTimestamp {
 
-    public UserStatisticsEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
-
     @Id
     public int id;
 
@@ -24,19 +20,19 @@ public class UserStatisticsEntity extends EntityTimestamp {
 
     @NotNull
     @Column(columnDefinition = "int(11) default 0")
-    private int loginStreak;
+    public int loginStreak;
 
-    private Date loginStreakLast;
-
-    @NotNull
-    @Column(columnDefinition = "int(11) default 0")
-    private int loginStreakLifetime;
+    public Date loginStreakLast;
 
     @NotNull
     @Column(columnDefinition = "int(11) default 0")
-    private int totalSecondsOnline;
+    public int loginStreakLifetime;
 
     @NotNull
     @Column(columnDefinition = "int(11) default 0")
-    private int totalLogins;
+    public int totalSecondsOnline;
+
+    @NotNull
+    @Column(columnDefinition = "int(11) default 0")
+    public int totalLogins;
 }
