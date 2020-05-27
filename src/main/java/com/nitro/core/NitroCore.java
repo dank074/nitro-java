@@ -1,6 +1,7 @@
 package com.nitro.core;
 
 import com.nitro.common.component.Component;
+import com.nitro.common.logger.NitroLogger;
 import com.nitro.core.communication.CommunicationManager;
 import com.nitro.core.communication.ICommunicationManager;
 import com.nitro.core.config.ConfigManager;
@@ -15,6 +16,8 @@ public class NitroCore extends Component implements INitroCore {
     private final ICommunicationManager communicationManager;
 
     public NitroCore() {
+        NitroLogger.install();
+
         this.configManager = new ConfigManager(this);
         this.pluginManager = new PluginManager(this);
         this.communicationManager = new CommunicationManager(this);
@@ -24,6 +27,8 @@ public class NitroCore extends Component implements INitroCore {
         this.communicationManager.dispose();
         this.pluginManager.dispose();
         this.configManager.dispose();
+
+        NitroLogger.uninstall();
     }
 
     public IConfigManager getConfigManager() {

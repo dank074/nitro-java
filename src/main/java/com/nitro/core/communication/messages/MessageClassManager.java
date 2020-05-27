@@ -1,5 +1,7 @@
 package com.nitro.core.communication.messages;
 
+import com.nitro.common.logger.NitroLogger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,7 @@ public class MessageClassManager {
         String name = messageEvent.getName();
 
         if(this.messageIdByEvent.containsKey(name)) {
-            System.out.println(messageEvent.getSimpleName() + " is already registered. Setting to header id: " + header);
+            NitroLogger.printWarn(messageEvent.getSimpleName() + " is already registered. Setting to header id: " + header);
         }
 
         this.messageIdByEvent.put(name, header);
@@ -59,7 +61,7 @@ public class MessageClassManager {
         String name = messageComposer.getName();
 
         if(this.messageIdByComposer.containsKey(name)) {
-            System.out.println(messageComposer.getSimpleName() + " is already registered. Setting to header id: " + header);
+            NitroLogger.printWarn(messageComposer.getSimpleName() + " is already registered. Setting to header id: " + header);
         }
 
         this.messageIdByComposer.put(name, header);
@@ -82,7 +84,7 @@ public class MessageClassManager {
             try {
                 messageEvent.setParser(messageEvent.getParserClass().getDeclaredConstructor().newInstance());
             } catch(Exception e) {
-                System.out.println("Error registering message event");
+                NitroLogger.printError("Error registering message event: " + messageEvent.getClass().getSimpleName());
             }
         } else {
             messageEvent.setParser(existing.get(0).getParser());

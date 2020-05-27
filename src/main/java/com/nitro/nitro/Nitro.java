@@ -12,7 +12,7 @@ import com.nitro.nitro.user.UserManager;
 
 public class Nitro extends Component {
 
-    public static Nitro INSTANCE = null;
+    private static Nitro INSTANCE = null;
 
     private final INitroCore nitroCore;
     private final IRoomManager roomManager;
@@ -43,7 +43,7 @@ public class Nitro extends Component {
             this.roomManager.init();
             this.userManager.init();
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            this.getLogger().error(e.getMessage());
         }
     }
 
@@ -82,5 +82,9 @@ public class Nitro extends Component {
 
     public IUserManager getUserManager() {
         return this.userManager;
+    }
+
+    public static Nitro getInstance() {
+        return INSTANCE;
     }
 }

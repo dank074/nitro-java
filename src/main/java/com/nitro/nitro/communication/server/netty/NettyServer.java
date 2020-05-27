@@ -46,9 +46,9 @@ public class NettyServer extends Server {
         this.bootstrap.bind(new InetSocketAddress(this.getIp(), this.getPort()))
                 .addListener(future -> {
                     if(!future.isSuccess()) {
-                        System.out.println("NettyServer failed to start");
+                        this.getLogger().error("NettyServer failed to start");
                     } else {
-                        System.out.println("NettyServer is listening on {}:{}");
+                        this.getLogger().log("NettyServer is listening on " + this.getIp() + ":" + this.getPort());
                     }
                 });
     }
@@ -58,7 +58,7 @@ public class NettyServer extends Server {
             this.workerGroup.shutdownGracefully().sync();
             this.bossGroup.shutdownGracefully().sync();
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            this.getLogger().error(e.getMessage());
         }
 
         super.onDispose();

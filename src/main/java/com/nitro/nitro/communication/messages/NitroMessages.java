@@ -18,10 +18,7 @@ import com.nitro.nitro.communication.messages.outgoing.security.SecurityAuthenti
 import com.nitro.nitro.communication.messages.outgoing.security.SecurityMachineComposer;
 import com.nitro.nitro.communication.messages.outgoing.user.access.UserPermissionsComposer;
 import com.nitro.nitro.communication.messages.outgoing.user.access.UserRightsComposer;
-import com.nitro.nitro.communication.messages.outgoing.user.data.UserAchievementScoreComposer;
-import com.nitro.nitro.communication.messages.outgoing.user.data.UserFirstLoginOfDayComposer;
-import com.nitro.nitro.communication.messages.outgoing.user.data.UserHomeRoomComposer;
-import com.nitro.nitro.communication.messages.outgoing.user.data.UserInfoComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.*;
 
 public class NitroMessages extends MessageConfiguration {
 
@@ -59,5 +56,6 @@ public class NitroMessages extends MessageConfiguration {
         this.composers.put(OutgoingHeaders.FIRST_LOGIN_OF_DAY, UserFirstLoginOfDayComposer.class);
         this.composers.put(OutgoingHeaders.USER_HOME_ROOM, UserHomeRoomComposer.class);
         this.composers.put(OutgoingHeaders.USER_INFO, UserInfoComposer.class);
+        this.composers.put(OutgoingHeaders.USER_PROFILE, UserProfileComposer.class);
     }
 }

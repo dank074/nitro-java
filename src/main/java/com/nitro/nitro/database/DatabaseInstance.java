@@ -43,7 +43,7 @@ public class DatabaseInstance extends Component implements IDatabaseInstance {
             try {
                 this.getDatabase().save(entityBean);
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                this.getLogger().error(e.getMessage());
             }
 
             return;
@@ -79,7 +79,7 @@ public class DatabaseInstance extends Component implements IDatabaseInstance {
 
                         that.getDatabase().save(entityBean);
                     } catch(Exception e) {
-                        System.out.println(e.getMessage());
+                        that.getLogger().error(e.getMessage());
 
                         break;
                     }

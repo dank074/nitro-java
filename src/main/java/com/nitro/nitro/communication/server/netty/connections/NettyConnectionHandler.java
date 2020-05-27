@@ -90,7 +90,7 @@ public class NettyConnectionHandler extends SimpleChannelInboundHandler<ByteBuf>
                 }
             }
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            this.nettyServer.getLogger().error(e.getMessage());
         }
     }
 

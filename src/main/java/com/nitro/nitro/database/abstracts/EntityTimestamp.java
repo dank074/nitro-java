@@ -1,6 +1,5 @@
 package com.nitro.nitro.database.abstracts;
 
-import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
 import io.ebean.annotation.WhenModified;
 
@@ -10,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @MappedSuperclass
-public abstract class EntityTimestamp extends Model
+public abstract class EntityTimestamp
 {
     @WhenCreated
     @NotNull
@@ -21,4 +20,12 @@ public abstract class EntityTimestamp extends Model
     @NotNull
     @Column(columnDefinition = "DATETIME default CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()")
     protected Date timestampUpdated;
+
+    public Date getTimestampCreated() {
+        return this.timestampCreated;
+    }
+
+    public Date getTimestampUpdated() {
+        return this.timestampUpdated;
+    }
 }

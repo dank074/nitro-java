@@ -131,7 +131,7 @@ public abstract class Server extends Component implements IServer {
 
                 this.getMessages().registerMessageEvent(event);
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                this.getLogger().error(e.getMessage());
             }
         }
     }
@@ -145,10 +145,12 @@ public abstract class Server extends Component implements IServer {
 
         if(messageCallback != null)
         {
+            this.getLogger().log("Processing Event: " + event.getClass().getSimpleName());
+
             try {
                 messageCallback.invoke(event.getMessageListener(), event);
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                this.getLogger().error(e.getMessage());
             }
         }
     }
@@ -159,10 +161,12 @@ public abstract class Server extends Component implements IServer {
         int header = this.getMessages().getComposerId(composer);
 
         if(header == -1) {
-            System.out.println(composer.getClass().getSimpleName() + " has not been registered");
+            this.getLogger().error(composer.getClass().getSimpleName() + " has not been registered");
 
             return;
         }
+
+        this.getLogger().log("Processing Composer: " + composer.getClass().getSimpleName() + " with header: " + header);
 
         connection.write(this.getCodec().encode(header, composer.getMessageArray()));
     }

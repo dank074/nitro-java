@@ -33,7 +33,7 @@ public class User extends Component implements IUser {
             this.connection = null;
         }
 
-        this.userDetails.saveNow();
+        this.userDetails.save(true);
     }
 
     public boolean setConnection(IConnection connection) {

@@ -1,12 +1,26 @@
 package com.nitro.common.component;
 
+import com.nitro.common.logger.INitroLogger;
+import com.nitro.common.logger.NitroLogger;
+
 public class Component implements IComponent {
 
     private boolean initialized;
     private boolean disposed;
 
-    public Component() {
+    private INitroLogger logger;
+
+    public Component(NitroLogger logger) {
+        this.initialized = false;
         this.disposed = false;
+
+        this.logger = logger;
+    }
+
+    public Component() {
+        this(new NitroLogger());
+
+        this.logger.setName(getClass().getSimpleName());
     }
 
     public void init() {
@@ -39,5 +53,9 @@ public class Component implements IComponent {
 
     public boolean isDisposed() {
         return this.disposed;
+    }
+
+    public INitroLogger getLogger() {
+        return this.logger;
     }
 }

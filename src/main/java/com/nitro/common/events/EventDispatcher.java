@@ -1,5 +1,7 @@
 package com.nitro.common.events;
 
+import com.nitro.common.logger.NitroLogger;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +67,7 @@ public class EventDispatcher implements IEventDispatcher {
             try {
                 method.invoke(listener, event);
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                NitroLogger.printError(e.getMessage());
             }
         }
 

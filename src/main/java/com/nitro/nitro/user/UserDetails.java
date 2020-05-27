@@ -20,12 +20,12 @@ public class UserDetails {
         this.setExtendedData();
     }
 
-    public void save() {
-        Nitro.INSTANCE.getDatabaseInstance().saveEntity((EntityBean) this.entity);
+    public void save(boolean skipQueue) {
+        Nitro.getInstance().getDatabaseInstance().saveEntity((EntityBean) this.entity, skipQueue);
     }
 
-    public void saveNow() {
-        Nitro.INSTANCE.getDatabaseInstance().saveEntity((EntityBean) this.entity, true);
+    public void save() {
+        this.save(false);
     }
 
     private void setExtendedData() {
@@ -45,7 +45,7 @@ public class UserDetails {
             needsSave = true;
         }
 
-        if(needsSave) this.saveNow();
+        if(needsSave) this.save(true);
     }
 
     public void setOnlineStatus(boolean flag, boolean updateStreak) {
@@ -73,15 +73,27 @@ public class UserDetails {
         return this.entity.getUsername();
     }
 
-    public String getFigure() {
-        return this.entity.getFigure();
+    public String getMotto() {
+        return this.entity.getMotto();
     }
 
     public String getGender() {
         return this.entity.getGender().toUpperCase();
     }
 
-    public String getMotto() {
-        return this.entity.getMotto();
+    public String getFigure() {
+        return this.entity.getFigure();
+    }
+
+    public boolean isOnline() {
+        return this.entity.isOnline();
+    }
+
+    public Date getTimestampCreated() {
+        return this.entity.getTimestampCreated();
+    }
+
+    public int getAchievementScore() {
+        return this.entity.getUserInfoEntity().getAchievementScore();
     }
 }

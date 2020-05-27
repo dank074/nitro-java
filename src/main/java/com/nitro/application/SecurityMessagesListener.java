@@ -25,8 +25,8 @@ public class SecurityMessagesListener implements IMessageListener {
 
     @MessageHandler
     public void onSecurityTicketEvent(SecurityTicketEvent event) {
-        ISecurityManager securityManager = Nitro.INSTANCE.getSecurityManager();
-        IUserManager userManager = Nitro.INSTANCE.getUserManager();
+        ISecurityManager securityManager = Nitro.getInstance().getSecurityManager();
+        IUserManager userManager = Nitro.getInstance().getUserManager();
 
         if((securityManager == null) || (userManager == null)) {
             event.getConnection().dispose();

@@ -2,9 +2,12 @@ package com.nitro.application;
 
 import com.nitro.core.communication.messages.IMessageListener;
 import com.nitro.core.communication.messages.MessageHandler;
+import com.nitro.nitro.Nitro;
 import com.nitro.nitro.communication.messages.incoming.user.data.*;
 import com.nitro.nitro.communication.messages.outgoing.user.data.UserInfoComposer;
+import com.nitro.nitro.communication.messages.outgoing.user.data.UserProfileComposer;
 import com.nitro.nitro.user.IUser;
+import com.nitro.nitro.user.IUserManager;
 
 public class UserMessagesListener implements IMessageListener {
 
@@ -27,6 +30,15 @@ public class UserMessagesListener implements IMessageListener {
 
     @MessageHandler
     public void onUserProfileEvent(UserProfileEvent event) {
+        IUserManager userManager = Nitro.getInstance().getUserManager();
+
+        if(userManager == null) return;
+
+        IUser profile = userManager.getOfflineUser(event.getParser().getUserId());
+
+        if(profile == null) return;
+
+        event.getConnection().processComposer(new UserProfileComposer(profile, false, false));
     }
 
     @MessageHandler

@@ -1,5 +1,6 @@
 package com.nitro.application;
 
+import com.nitro.common.logger.NitroLogger;
 import com.nitro.core.NitroCore;
 import com.nitro.core.communication.servers.IServer;
 import com.nitro.core.config.IConfigManager;
@@ -23,7 +24,7 @@ public class Application {
         try {
             new Application();
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            NitroLogger.printError(e.getMessage());
         }
     }
 
@@ -52,7 +53,7 @@ public class Application {
             File configFile = new File(configPath);
 
             if(!configFile.exists()) {
-                System.out.println("The configuration file could not be found, config.yml");
+                this.nitro.getLogger().error("The configuration file could not be found, config.yml");
 
                 return;
             }
@@ -61,7 +62,7 @@ public class Application {
 
             config.loadYamlConfiguration(yaml.load(new FileInputStream(configFile)));
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            this.nitro.getLogger().error(e.getMessage());
         }
     }
 

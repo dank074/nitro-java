@@ -109,7 +109,7 @@ public class UserEntity extends EntityTimestamp {
         this.lastOnline = date;
     }
 
-    public boolean getOnline() {
+    public boolean isOnline() {
         return this.online.equals("1");
     }
 
@@ -124,7 +124,7 @@ public class UserEntity extends EntityTimestamp {
     public void setUserInfoEntity(UserInfoEntity entity) {
         if(entity == null) return;
 
-        entity.userEntity = this;
+        entity.setUserEntity(this);
 
         this.userInfoEntity = entity;
     }

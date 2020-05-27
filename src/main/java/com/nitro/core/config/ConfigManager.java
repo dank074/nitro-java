@@ -32,7 +32,7 @@ public class ConfigManager extends Component implements IConfigManager {
 
     public <V> void setValue(String key, V value) {
         if(this.configuration.get(key) != null) {
-            System.out.println("Overriding configuration key: " + key);
+            this.getLogger().warn("Overriding configuration key: " + key);
         }
 
         this.configuration.put(key, value);
